@@ -63,5 +63,5 @@ There is a provided **Python script** to automatically calculate hashes for you.
 
 
 [^1]: https://debugging.games
-[^2]: On the 18th December 2006 broadcast (episode 40), a bug occurred that caused Kuro to remain in the room even after the broadcast had finished, which was fixed by the morning (translated from https://ja.wikipedia.org/wiki/トロ・ステーション)
+[^2]: On the 18th December 2006 broadcast (episode 40), a bug occurred that caused Kuro to remain in the room even after the broadcast had finished, which was fixed by the morning (machine translated from https://ja.wikipedia.org/wiki/トロ・ステーション)
 [^3]: Unsure if it repeats forever, I assume it goes through every item or something. O(n) time complexity at worst case.
