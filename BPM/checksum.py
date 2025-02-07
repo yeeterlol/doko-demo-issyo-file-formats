@@ -9,8 +9,9 @@ def basic_hash(name):
         res = (res * 31 + c) & 0xffffffff
     return res 
 
-def get_ks_sum(name, pos, items):
+def get_ks_sum(name, items):
     checksum = csum(name)
-    calc = (checksum - (checksum // pos) * pos)
-    c = calc % items
-    return c
+    res = checksum % items
+    print("hash -> ", res)
+    print("offset -> ", ((res+1) * 16))
+    return res
