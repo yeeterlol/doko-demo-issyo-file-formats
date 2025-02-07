@@ -46,20 +46,22 @@ dec_uint(unsigned char* arr, size_t len)
 A Big-Endian ported version of BPM for the PS3, known for being very buggy.[^2]
 
 Encryption has been removed from BPM 1.1. All offsets are unencrypted.
-### Checksum zigzag index pattern
-*WIP: Document more about how this pattern works and see if 1.0 included this checksum pattern, from Nekobit's comments, he seems that he forgot to calculate the checksum. The checksum calculation also needs to be more accurate. It works 95% of the time.*
 
-The 0xC struct (next_index) is a checksum based on the name, size of file, and the file count.
+## Hashing
+A very important thing to know that all of the PackMan file entrys are a hash table for optimization.  
 
-If the 0xC bytes has FF FF FF FF then it is padding bytes in order to keep the pattern going, the game will automatically ignore them. **DO NOT UNDER ANY CIRCUMSTANCES REPLACE ALL FILE INFO CHECKSUMS WITH FF FF FF FF, YOUR GAME WILL CRASH.** 
+At 0xC for every PackedFileInfo, there is a next_index uint32. This is the next index to a Linked List.
 
-Every 2 file infos, the game will automatically calculate a checksum and the resulting  and check. If the checksum fails then the BPM will refuse to load. 
+If it is just `FF FF FF FF` then it is an empty entry, anything else should be considered an entry if it is below or equal to the amount of items in the file.
 
+The hash is calculated by the BKDR hash which comes from The C Programming Language book which it is modulo operated by the amount of items. 
 
+The game searches for items by calculating a hash, going to the index and calculating `File name offset + Offset file name`, if it does not match, it goes to the index of 0xC while checking if it is en empty entry, this repeats forever until an empty entry is found or the file is matched.[^3]
 
-
+There is a provided **Python script** to automatically calculate hashes for you.
 
 
 
 [^1]: https://debugging.games
 [^2]: On the 18th December 2006 broadcast (episode 40), a bug occurred that caused Kuro to remain in the room even after the broadcast had finished, which was fixed by the morning (translated from https://ja.wikipedia.org/wiki/トロ・ステーション)
+[^3]: Unsure if it repeats forever, I assume it goes through every item or something. O(n) time complexity at worst case.
